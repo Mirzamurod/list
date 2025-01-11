@@ -11,8 +11,8 @@ i18n.use(initReactI18next).init({
   },
   lng:
     (typeof window !== 'undefined' && JSON.parse(window.localStorage.getItem('lang')!)?.lang) ??
-    'eng',
-  fallbackLng: 'eng',
+    'ru',
+  fallbackLng: 'ru',
   interpolation: { escapeValue: false },
 })
 
