@@ -189,6 +189,8 @@ const uz = {
   copied_link: 'Nusxa olindi',
   birthyear: "Tug'ilgan yili",
   birthyear_required: "Tug'ilgan yili kerak",
+  comment: 'Izoh',
+  info: "Ma'lumot",
 }
 
 export default uz

@@ -189,6 +189,8 @@ const ru = {
   copied_link: 'Скопированная ссылка',
   birthyear: 'Год рождения',
   birthyear_required: 'Год рождения обязателен',
+  comment: 'Comment',
+  info: 'Информация',
 }
 
 export default ru

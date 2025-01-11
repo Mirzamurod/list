@@ -191,6 +191,8 @@ const eng = {
   copied_link: 'Copied link',
   birthyear: 'Birth year',
   birthyear_required: 'Birth year is required',
+  comment: 'Comment',
+  info: 'Information',
 }
 
 export type TranslationKeys = keyof typeof eng

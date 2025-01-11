@@ -72,6 +72,7 @@ const AddEditCard: FC<IProps> = props => {
       </Grid>
       <Grid columnGap={4} mt={4}>
         <GridItem>
+          <FormLabel>{t('info')}</FormLabel>
           <Box
             bg={colorMode === 'light' ? 'white' : '#2D3748'}
             color={colorMode === 'light' ? '#1A202C' : 'white'}
