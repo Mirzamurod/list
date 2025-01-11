@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, FC } from 'react'
 import { Language } from '@/types/language'
 
 interface LanguageContextProps {
@@ -8,13 +8,13 @@ interface LanguageContextProps {
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(undefined)
 
-const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const getInitialLanguage = (): Language => {
     if (typeof window !== 'undefined') {
       const storedLang = localStorage.getItem('lang')
-      return storedLang ? JSON.parse(storedLang) : { lang: 'eng', name: 'Eng' }
+      return storedLang ? JSON.parse(storedLang) : { lang: 'ru', name: 'Ru' }
     }
-    return { lang: 'eng', name: 'Eng' }
+    return { lang: 'ru', name: 'Ru' }
   }
 
   const [language, setLanguageState] = useState<Language>(getInitialLanguage)
@@ -22,7 +22,7 @@ const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === 'lang') {
-        setLanguageState(event.newValue ? JSON.parse(event.newValue) : { lang: 'eng', name: 'Eng' })
+        setLanguageState(event.newValue ? JSON.parse(event.newValue) : { lang: 'ru', name: 'Ru' })
       }
     }
 

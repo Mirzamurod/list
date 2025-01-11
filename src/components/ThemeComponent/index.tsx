@@ -12,7 +12,7 @@ const { ToastContainer } = createStandaloneToast()
 const ThemeComponent = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!localStorage.getItem('lang'))
-      localStorage.setItem('lang', JSON.stringify({ lang: 'eng', name: 'Eng' }))
+      localStorage.setItem('lang', JSON.stringify({ lang: 'ru', name: 'Ru' }))
   }, [])
 
   return (

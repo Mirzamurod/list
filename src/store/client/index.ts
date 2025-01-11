@@ -95,9 +95,10 @@ export const addClient = (data: TClientForm) =>
 
 export const editClient = (id: string, data: TClientEditForm) =>
   list({
-    url: clients + id,
+    url: clients,
     method: 'patch',
     data,
+    params: { id },
     onStart: client.actions.onStartAddEditClient.type,
     onSuccess: client.actions.onSuccessAddEditClient.type,
     onFail: client.actions.onFailAddEditClient.type,
@@ -105,8 +106,9 @@ export const editClient = (id: string, data: TClientEditForm) =>
 
 export const deleteClient = (id: string) =>
   list({
-    url: clients + id,
+    url: clients,
     method: 'delete',
+    params: { id },
     onStart: client.actions.onStartAddEditClient.type,
     onSuccess: client.actions.onSuccessAddEditClient.type,
     onFail: client.actions.onFailAddEditClient.type,

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { EditorState, convertToRaw } from 'draft-js'
+import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import { useAppSelector } from '@/store'
@@ -56,13 +56,21 @@ const AddEditClient = () => {
   }, [router.query.addEdit])
 
   useEffect(() => {
-    if (client)
+    if (client) {
       Object.keys(client).map(key => setValue(key as keyof TClientForm, client[key as 'phone']))
+      setDesc(
+        EditorState.createWithContent(
+          // @ts-ignore
+          ContentState.createFromBlockArray(convertFromHTML(client!?.comment))
+        )
+      )
+    }
   }, [client])
 
   useEffect(() => {
     if (success) {
       reset()
+      setDesc(EditorState.createEmpty())
       router.push({ pathname: '/clients/list', query: { page: 1, limit: 10 } })
     }
   }, [success])
