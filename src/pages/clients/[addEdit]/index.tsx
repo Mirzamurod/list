@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { ContentState, EditorState, convertToRaw } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import { Alert, AlertIcon, Box, Button, Heading, Stack } from '@chakra-ui/react'
+import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import { useAppSelector } from '@/store'
 import AddEditCard from '@/view/client/AddEditCard'
 import AddEditAction from '@/view/client/AddEditAction'
@@ -83,12 +83,6 @@ const AddEditClient = () => {
             {t('go_to_clients')}
           </Button>
         </Stack>
-        {router.query.addEdit !== 'add' ? (
-          <Alert status='warning' borderRadius={6} mb={3}>
-            <AlertIcon />
-            {t('alert_autocomplete')}
-          </Alert>
-        ) : null}
         <form onSubmit={handleSubmit(onSubmit)}>
           <AddEditCard desc={desc} setDesc={setDesc} />
           <AddEditAction />

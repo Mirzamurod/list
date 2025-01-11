@@ -75,8 +75,9 @@ export const getClients = (params?: any) =>
 
 export const getClient = (id: string) =>
   list({
-    url: clients + id,
+    url: clients,
     method: 'get',
+    params: { id },
     onStart: client.actions.onStartGetClient.type,
     onSuccess: client.actions.onSuccessGetClient.type,
     onFail: client.actions.onFailGetClient.type,

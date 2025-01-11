@@ -1,5 +1,7 @@
 import { FC } from 'react'
 import dynamic from 'next/dynamic'
+import { useTranslation } from 'next-i18next'
+import { useFormContext } from 'react-hook-form'
 import {
   Box,
   Grid,
@@ -14,8 +16,6 @@ import {
 } from '@chakra-ui/react'
 import Input from '@/components/Input'
 import { TInputType } from '@/types/input'
-import { useTranslation } from 'next-i18next'
-import { useFormContext } from 'react-hook-form'
 
 const Editor = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false })
 
