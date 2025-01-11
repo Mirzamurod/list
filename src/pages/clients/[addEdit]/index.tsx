@@ -78,7 +78,7 @@ const AddEditClient = () => {
   useEffect(() => {
     if (clientErrors?.length)
       clientErrors.map(item =>
-        setError(item.path as keyof TClientForm, { type: 'custom', message: item.msg })
+        setError(item.param as keyof TClientForm, { type: 'custom', message: item.msg })
       )
   }, [clientErrors])
 

@@ -1,14 +1,25 @@
 import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { Box, Button, Container, Stack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  InputGroup,
+  InputLeftAddon,
+  Stack,
+  Input as ChInput,
+} from '@chakra-ui/react'
 import { TRegister } from '@/types/register'
 import { userLogin } from '@/store/user/login'
 import { useAppSelector } from '@/store'
-import { TranslationKeys, t } from '@/languages/Eng'
 import BlankLayout from '@/components/layout/BlankLayout'
 import Input from '@/components/Input'
 import PasswordInput from '@/components/PasswordInput'
@@ -17,6 +28,7 @@ import navbar from '@/navigation/vertical'
 const Login = () => {
   const dispatch = useDispatch()
   const router = useRouter()
+  const { t } = useTranslation()
   const formSchema = yup.object().shape({
     phone: yup.string().required(t('phone_required')),
     password: yup.string().required(t('password_required')),
@@ -27,14 +39,19 @@ const Login = () => {
     defaultValues: { phone: '', password: '' },
   })
 
-  const { handleSubmit, setError } = methods
+  const {
+    handleSubmit,
+    setError,
+    register,
+    formState: { errors },
+  } = methods
 
   const { errors: loginErrors, success, isLoading, user } = useAppSelector(state => state.login)
 
   useEffect(() => {
     if (loginErrors?.length)
       loginErrors?.map(item =>
-        setError(item.path as 'phone', { type: 'value', message: t(item.msg as TranslationKeys) })
+        setError(item.param as 'phone', { type: 'value', message: t(item.msg) })
       )
   }, [loginErrors])
 
@@ -50,8 +67,18 @@ const Login = () => {
         <Container>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={3}>
-              <Input name='phone' />
-              <PasswordInput name='password' />
+              {/* <Input name='phone' /> */}
+              <FormControl isInvalid={!!errors?.phone?.message} isRequired>
+                <FormLabel htmlFor='phone'>{t('phone')}</FormLabel>
+                <InputGroup>
+                  <InputLeftAddon>+998</InputLeftAddon>
+                  <ChInput {...register('phone')} type='number' placeholder={t('phone')} />
+                </InputGroup>
+                {errors?.phone?.message ? (
+                  <FormErrorMessage>{t(errors?.phone?.message as string)}</FormErrorMessage>
+                ) : null}
+              </FormControl>
+              <PasswordInput name='password' isRequired />
               <Button
                 variant='outline'
                 type='submit'

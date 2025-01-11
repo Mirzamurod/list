@@ -1,4 +1,4 @@
 export type TError = {
   msg: string
-  path: string
+  param: string
 }

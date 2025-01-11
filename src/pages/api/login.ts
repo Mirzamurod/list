@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else
         res
           .status(400)
-          .json({ message: [{ message: 'user_not_found', param: 'phone' }], success: false })
+          .json({ message: [{ msg: 'user_not_found', param: 'phone' }], success: false })
     })
   } else res.status(404).json('')
 }

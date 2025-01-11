@@ -38,7 +38,7 @@ const login = createSlice({
     },
     onFail: (state, { payload }) => {
       state.isLoading = false
-      state.errors = payload?.messages
+      state.errors = payload?.message
       state.success = payload?.success
     },
     getUserData: (state, { payload }) => {

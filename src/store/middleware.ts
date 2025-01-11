@@ -51,7 +51,7 @@ const middleware =
         if (error?.response?.statusCode === 401) dispatch(deleteUser())
         else {
           const data = error?.response?.data
-          if (data?.message && typeof data?.message === 'string')
+          if (typeof data?.message === 'string' && data?.message)
             toast({
               status: 'warning',
               position: 'top-right',
@@ -60,7 +60,7 @@ const middleware =
               title: i18n?.t(data?.message),
             })
 
-          dispatch({ type: onFail, payload: error?.response?.data })
+          dispatch({ type: onFail, payload: data })
         }
       })
   }
