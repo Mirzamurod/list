@@ -10,12 +10,14 @@ import middleware from '@/store/middleware'
 import login from '@/store/user/login'
 import register from '@/store/user/register'
 import client from '@/store/client'
+import checkup from '@/store/checkup'
 
 export const store = configureStore({
   reducer: {
     login,
     register,
     client,
+    checkup,
   },
   // @ts-ignore
   middleware: () => [middleware],

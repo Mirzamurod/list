@@ -97,6 +97,7 @@ const ru = {
   info: 'Информация',
   customer_information: 'Информация для клиентов',
   show_less: 'Показать меньше',
+  checkup: 'Сеансы',
 }
 
 export default ru

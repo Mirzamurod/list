@@ -99,6 +99,7 @@ const eng = {
   info: 'Information',
   customer_information: 'Customer information',
   show_less: 'Show less',
+  checkup: 'Check up',
 }
 
 export type TranslationKeys = keyof typeof eng

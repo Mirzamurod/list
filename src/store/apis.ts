@@ -10,3 +10,6 @@ export const registerapi = 'register'
 
 // client
 export const clients = 'clients'
+
+// checkup
+export const checkupapi = 'checkup'

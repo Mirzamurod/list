@@ -97,6 +97,7 @@ const uz = {
   info: "Ma'lumot",
   customer_information: "Mijoz ma'lumotlari",
   show_less: "Kamroq ko'rsatish",
+  checkup: 'Seanslar',
 }
 
 export default uz
