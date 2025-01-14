@@ -1,4 +1,4 @@
-import { InputProps } from '@chakra-ui/react'
+import { InputProps, TextareaProps } from '@chakra-ui/react'
 
 export type TInput = {
   name: string
@@ -8,3 +8,5 @@ export type TInput = {
 }
 
 export type TInputType = TInput & InputProps
+
+export type TTextareaType = TInput & TextareaProps

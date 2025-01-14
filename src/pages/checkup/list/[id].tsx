@@ -18,7 +18,7 @@ const CheckupClient = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const debounceTimeout = useRef<NodeJS.Timeout | number | null>(null)
 
-  const { clients, isLoading, pageCount, success } = useAppSelector(state => state.client)
+  const { checkups, isLoading, pageCount, success } = useAppSelector(state => state.checkup)
 
   useEffect(() => {
     dispatch(
@@ -70,7 +70,7 @@ const CheckupClient = () => {
     <Box>
       <TableHeader search={search} setSearch={setSearch} />
       <Table
-        data={clients}
+        data={checkups}
         columns={columns}
         loading={isLoading}
         pageCount={pageCount}

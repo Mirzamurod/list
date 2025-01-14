@@ -10,39 +10,52 @@ import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-
 import draftToHtml from 'draftjs-to-html'
 import { Box, Button, Heading, Stack } from '@chakra-ui/react'
 import { useAppSelector } from '@/store'
-import AddEditCard from '@/view/client/AddEditCard'
-import AddEditAction from '@/view/client/AddEditAction'
-import { addClient, editClient, getClient } from '@/store/client'
-import { TClientForm } from '@/types/client'
+import AddEditCard from '@/view/checkup/AddEditCard'
+import AddEditAction from '@/view/checkup/AddEditAction'
+import { addCheckup, editCheckup, getCheckup } from '@/store/checkup'
+import { TCheckupForm } from '@/types/checkup'
 
-const AddEditClient = () => {
+const AddEditCheckup = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const dispatch = useDispatch()
   const formSchema = yup.object().shape({
-    name: yup.string().required(t('name_required')),
-    phone: yup.string().required(t('phone_required')),
-    year: yup.string().required(t('birthyear_required')),
-    address: yup.string().required(t('address_required')),
+    device: yup.string(),
+    drugs: yup.string(),
+    xijoma: yup.object().shape({
+      head: yup.array(yup.number()),
+      backOfBody: yup.array(yup.number()),
+      headfrontOfBody: yup.array(yup.number()),
+      other: yup.array(yup.number()),
+    }),
+    createdOn: yup.date().default(function () {
+      return new Date()
+    }),
   })
-  const methods = useForm<TClientForm>({
+  const methods = useForm<TCheckupForm>({
     mode: 'onTouched',
+    // @ts-ignore
     resolver: yupResolver(formSchema),
-    defaultValues: { name: '', phone: '', year: '', address: '' },
+    defaultValues: {
+      device: '',
+      drugs: '',
+      xijoma: { head: [], backOfBody: [], frontOfBody: [], other: [] },
+      createdOn: new Date(),
+    },
   })
   const [desc, setDesc] = useState(EditorState.createEmpty())
   const { handleSubmit, setValue, setError, reset } = methods
 
   const { success, errors: clientErrors, client } = useAppSelector(state => state.client)
 
-  const onSubmit = (values: TClientForm) => {
+  const onSubmit = (values: TCheckupForm) => {
     if (router.query.addEdit === 'add')
       dispatch(
-        addClient({ ...values, comment: draftToHtml(convertToRaw(desc.getCurrentContent())) })
+        addCheckup({ ...values, comment: draftToHtml(convertToRaw(desc.getCurrentContent())) })
       )
     else
       dispatch(
-        editClient(router.query.addEdit as string, {
+        editCheckup(router.query.addEdit as string, {
           ...values,
           comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
         })
@@ -51,13 +64,13 @@ const AddEditClient = () => {
 
   useEffect(() => {
     if (router.query.addEdit && router.query.addEdit !== 'add')
-      dispatch(getClient(router.query.addEdit as string))
+      dispatch(getCheckup(router.query.addEdit as string))
     else reset()
   }, [router.query.addEdit])
 
   useEffect(() => {
     if (client) {
-      Object.keys(client).map(key => setValue(key as keyof TClientForm, client[key as 'phone']))
+      Object.keys(client).map(key => setValue(key as keyof TCheckupForm, client[key as 'phone']))
       setDesc(
         EditorState.createWithContent(
           // @ts-ignore
@@ -78,7 +91,7 @@ const AddEditClient = () => {
   useEffect(() => {
     if (clientErrors?.length)
       clientErrors.map(item =>
-        setError(item.param as keyof TClientForm, { type: 'custom', message: item.msg })
+        setError(item.param as keyof TCheckupForm, { type: 'custom', message: item.msg })
       )
   }, [clientErrors])
 
@@ -100,4 +113,4 @@ const AddEditClient = () => {
   )
 }
 
-export default AddEditClient
+export default AddEditCheckup

@@ -19,6 +19,8 @@ export type TCheckup = {
     frontOfBody?: number[]
     other?: number[]
   }
+  comment?: string
+  createdOn?: Date
   userId: string
 }
 
@@ -31,6 +33,8 @@ export type TCheckupForm = {
     frontOfBody?: number[]
     other?: number[]
   }
+  comment?: string
+  createdOn?: Date
 }
 
 export type TCheckupEditForm = {
@@ -42,4 +46,6 @@ export type TCheckupEditForm = {
     frontOfBody?: number[]
     other?: number[]
   }
+  comment?: string
+  createdOn?: Date
 }

@@ -12,6 +12,8 @@ const checkupSchema = new mongoose.Schema(
     },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
     clientId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'registries' },
+    comment: { type: String, trim: true },
+    createdOn: { type: Date },
   },
   { timestamps: true }
 )
