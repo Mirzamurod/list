@@ -2,26 +2,33 @@ import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { IconButton, Tooltip, Text, HStack } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
-import { TbCheckupList } from 'react-icons/tb'
 import { IoMdEye } from 'react-icons/io'
-import { TClient } from '@/types/client'
 import DeletePopover from '@/components/DeletePopover'
 import { deleteClient } from '@/store/client'
 import { TColumns } from '@/types/table'
+import { TCheckup } from '@/types/checkup'
 
 const columns: TColumns[] = [
   {
-    field: 'name',
-    headerName: 'name',
-    renderCell: ({ row }: { row: TClient }) => <Text>{row.name || '-'}</Text>,
+    field: 'device',
+    headerName: 'device',
+    renderCell: ({ row }: { row: TCheckup }) => <Text>{row.device || '-'}</Text>,
   },
-  { field: 'phone', headerName: 'phone' },
-  { field: 'year', headerName: 'birthyear' },
+  {
+    field: 'drugs',
+    headerName: 'drugs',
+    renderCell: ({ row }: { row: TCheckup }) => <Text>{row.drugs || '-'}</Text>,
+  },
+  {
+    field: 'xijoma',
+    headerName: 'xijoma',
+    renderCell: ({ row }: { row: TCheckup }) => <Text>Qo'l</Text>,
+  },
   {
     field: 'action',
     headerName: 'action',
     isNumeric: true,
-    renderCell: ({ row }: { row: TClient }) => {
+    renderCell: ({ row }: { row: TCheckup }) => {
       const { t } = useTranslation()
 
       return (
@@ -32,14 +39,6 @@ const columns: TColumns[] = [
               aria-label={t('view_client')}
               as={Link}
               href={`/clients/view/${row._id}`}
-            />
-          </Tooltip>
-          <Tooltip label={t('checkup_client')}>
-            <IconButton
-              icon={<TbCheckupList />}
-              aria-label={t('checkup_client')}
-              as={Link}
-              href={`/clients/checkup/${row._id}`}
             />
           </Tooltip>
           <Tooltip label={t('edit_client')}>

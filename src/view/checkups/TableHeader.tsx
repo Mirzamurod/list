@@ -1,8 +1,10 @@
 import { FC } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { AddIcon } from '@chakra-ui/icons'
-import { Box, Button, Heading, Input, Stack } from '@chakra-ui/react'
+import { Box, Button, Heading, Input, Stack, Text } from '@chakra-ui/react'
+import { useAppSelector } from '@/store'
 
 interface IProps {
   search: string
@@ -12,10 +14,16 @@ interface IProps {
 const TableHeader: FC<IProps> = props => {
   const { search, setSearch } = props
   const { t } = useTranslation()
+  const router = useRouter()
+
+  const { client } = useAppSelector(state => state.client)
 
   return (
     <Box>
       <Heading mb={2}>{t('checkup')}</Heading>
+      <Text fontSize='xl' mb={2}>
+        {client?.name}
+      </Text>
       <Stack mb={4} justifyContent='space-between' flexDirection={{ base: 'column', md: 'row' }}>
         <Input
           width='auto'
@@ -29,7 +37,7 @@ const TableHeader: FC<IProps> = props => {
             variant='outline'
             colorScheme='teal'
             leftIcon={<AddIcon />}
-            href='/checkup/add'
+            href={`/checkup/add/${router.query.id}`}
           >
             {t('add_checkup')}
           </Button>

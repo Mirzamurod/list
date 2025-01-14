@@ -8,6 +8,7 @@ import { TSortModel } from '@/types/table'
 import { useAppSelector } from '@/store'
 import columns from '@/view/checkups/columns'
 import { getCheckups } from '@/store/checkup'
+import { getClient } from '@/store/client'
 
 const CheckupClient = () => {
   const router = useRouter()
@@ -57,6 +58,10 @@ const CheckupClient = () => {
       if (debounceTimeout.current) clearTimeout(debounceTimeout.current as number)
     }
   }, [search])
+
+  useEffect(() => {
+    dispatch(getClient(router.query.id as string))
+  }, [])
 
   const onChange = (item: { [value: string]: string | string[] | number }) =>
     router.replace({ query: { ...router.query, ...item } }, undefined, { shallow: true })

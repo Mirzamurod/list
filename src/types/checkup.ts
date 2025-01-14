@@ -11,26 +11,35 @@ export type TCheckupState = {
 
 export type TCheckup = {
   _id: string
-  name: string
-  phone: string
-  year: string
-  address: string
-  comment?: string
+  device?: string
+  drugs?: string
+  xijoma?: {
+    head?: number[]
+    backOfBody?: number[]
+    frontOfBody?: number[]
+    other?: number[]
+  }
   userId: string
 }
 
 export type TCheckupForm = {
-  name: string
-  phone: string
-  year: string
-  address: string
-  comment?: string
+  device?: string
+  drugs?: string
+  xijoma?: {
+    head?: number[]
+    backOfBody?: number[]
+    frontOfBody?: number[]
+    other?: number[]
+  }
 }
 
 export type TCheckupEditForm = {
-  name?: string
-  phone?: string
-  year?: string
-  address?: string
-  comment?: string
+  device?: string
+  drugs?: string
+  xijoma?: {
+    head?: number[]
+    backOfBody?: number[]
+    frontOfBody?: number[]
+    other?: number[]
+  }
 }

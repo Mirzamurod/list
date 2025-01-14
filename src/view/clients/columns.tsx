@@ -34,14 +34,14 @@ const columns: TColumns[] = [
               href={`/clients/view/${row._id}`}
             />
           </Tooltip>
-          <Tooltip label={t('checkup_client')}>
+          {/* <Tooltip label={t('checkup_client')}>
             <IconButton
               icon={<TbCheckupList />}
               aria-label={t('checkup_client')}
               as={Link}
-              href={`/clients/checkup/${row._id}`}
+              href={`/checkup/list/${row._id}`}
             />
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip label={t('edit_client')}>
             <IconButton
               icon={<EditIcon />}
