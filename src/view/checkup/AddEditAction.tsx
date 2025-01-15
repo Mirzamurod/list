@@ -7,7 +7,7 @@ const AddEditAction = () => {
   const { t } = useTranslation()
   const router = useRouter()
 
-  const { isLoading } = useAppSelector(state => state.client)
+  const { isLoading } = useAppSelector(state => state.checkup)
 
   return (
     <Flex mt={4} justifyContent='end'>
@@ -16,9 +16,9 @@ const AddEditAction = () => {
         variant='outline'
         colorScheme='teal'
         isLoading={isLoading}
-        loadingText={t(router.query.addEdit === 'add' ? 'add_client' : 'edit_client')}
+        loadingText={t(router.query.addEdit === 'add' ? 'add_checkup' : 'edit_checkup')}
       >
-        {t(router.query.addEdit === 'add' ? 'add_client' : 'edit_client')}
+        {t(router.query.addEdit === 'add' ? 'add_checkup' : 'edit_checkup')}
       </Button>
     </Flex>
   )

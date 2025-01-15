@@ -1,7 +1,7 @@
-import { FC, useRef } from 'react'
+import { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { useTranslation } from 'next-i18next'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import TextareaAutosize from 'react-textarea-autosize'
 import {
   Box,
@@ -11,10 +11,12 @@ import {
   FormLabel,
   Textarea,
   FormControl,
-  Input,
   FormErrorMessage,
+  Text,
+  Image,
 } from '@chakra-ui/react'
-import { TInputType, TTextareaType } from '@/types/input'
+import { TTextareaType } from '@/types/input'
+import ImagePoint from '@/components/ImagePoint'
 
 const Editor = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false })
 
@@ -27,20 +29,13 @@ const AddEditCard: FC<IProps> = props => {
   const { desc, setDesc } = props
   const { colorMode } = useColorMode()
   const { t } = useTranslation()
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext()
 
   const inputs: TTextareaType[] = [{ name: 'device' }, { name: 'drugs' }]
-
-  const handleInput = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto' // Avvalgi balandlikni tozalash
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px` // Yangi balandlikni o'rnatish
-    }
-  }
 
   return (
     <Box>
@@ -72,18 +67,37 @@ const AddEditCard: FC<IProps> = props => {
                 <FormErrorMessage>{t(errors?.[item.name]?.message as string)}</FormErrorMessage>
               ) : null}
             </FormControl>
-            {/* <Textarea
-              rows={2}
-              {...item}
-              {...props}
-              resize='none'
-              id={item.name}
-              ref={textareaRef}
-              onInput={handleInput}
-              placeholder={t(item.placeholder || item.label || item.name)}
-            /> */}
           </GridItem>
         ))}
+      </Grid>
+      <Grid mt={4}>
+        <GridItem>
+          <Text>{t('xijoma_points')}</Text>
+          <Box
+            p='4'
+            mt={4}
+            rounded='md'
+            boxShadow='md'
+            bg={colorMode === 'light' ? 'white' : '#2D3748'}
+            color={colorMode === 'light' ? '#1A202C' : 'white'}
+          >
+            {[
+              { image: '/images/xijoma_head_point.jpg', alt: 'head' },
+              { image: '/images/xijoma_front_point.jpg', alt: 'front' },
+              { image: '/images/xijoma_back_point.jpg', alt: 'back' },
+              { image: '/images/xijoma_other_point.jpg', alt: 'hand_foot' },
+            ].map(item => (
+              <Box key={item.image}>
+                <Text>{t(item.alt)}</Text>
+                <Controller
+                  control={control}
+                  name=''
+                  render={({ field }) => <ImagePoint {...item} />}
+                />
+              </Box>
+            ))}
+          </Box>
+        </GridItem>
       </Grid>
       <Grid columnGap={4} mt={4}>
         <GridItem>

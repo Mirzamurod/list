@@ -46,7 +46,7 @@ const AddEditCheckup = () => {
   const [desc, setDesc] = useState(EditorState.createEmpty())
   const { handleSubmit, setValue, setError, reset } = methods
 
-  const { success, errors: clientErrors, client } = useAppSelector(state => state.client)
+  const { success, errors: checkupErrors, checkup } = useAppSelector(state => state.checkup)
 
   const onSubmit = (values: TCheckupForm) => {
     if (router.query.addEdit === 'add')
@@ -69,39 +69,39 @@ const AddEditCheckup = () => {
   }, [router.query.addEdit])
 
   useEffect(() => {
-    if (client) {
-      Object.keys(client).map(key => setValue(key as keyof TCheckupForm, client[key as 'phone']))
+    if (checkup) {
+      Object.keys(checkup).map(key => setValue(key as keyof TCheckupForm, checkup[key as 'device']))
       setDesc(
         EditorState.createWithContent(
           // @ts-ignore
-          ContentState.createFromBlockArray(convertFromHTML(client!?.comment))
+          ContentState.createFromBlockArray(convertFromHTML(checkup!?.comment))
         )
       )
     }
-  }, [client])
+  }, [checkup])
 
   useEffect(() => {
     if (success) {
       reset()
       setDesc(EditorState.createEmpty())
-      router.push({ pathname: '/clients/list', query: { page: 1, limit: 10 } })
+      router.push({ pathname: `/checkup/list/${router.query.id}`, query: { page: 1, limit: 10 } })
     }
   }, [success])
 
   useEffect(() => {
-    if (clientErrors?.length)
-      clientErrors.map(item =>
+    if (checkupErrors?.length)
+      checkupErrors.map(item =>
         setError(item.param as keyof TCheckupForm, { type: 'custom', message: item.msg })
       )
-  }, [clientErrors])
+  }, [checkupErrors])
 
   return (
     <FormProvider {...methods}>
       <Box>
         <Stack mb={4} justifyContent='space-between' flexDirection={{ base: 'column', md: 'row' }}>
-          <Heading>{t(router.query.addEdit === 'add' ? 'add_client' : 'edit_client')}</Heading>
-          <Button as={Link} href='/clients/list?page=1&limit=10'>
-            {t('go_to_clients')}
+          <Heading>{t(router.query.addEdit === 'add' ? 'add_checkup' : 'edit_checkup')}</Heading>
+          <Button as={Link} href={`/checkup/list/${router.query.id}?page=1&limit=10`}>
+            {t('go_to_checkup')}
           </Button>
         </Stack>
         <form onSubmit={handleSubmit(onSubmit)}>
