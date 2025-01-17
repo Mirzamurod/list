@@ -23,10 +23,10 @@ const AddEditCheckup = () => {
     device: yup.string(),
     drugs: yup.string(),
     xijoma: yup.object().shape({
-      head: yup.array(yup.number()),
-      backOfBody: yup.array(yup.number()),
-      headfrontOfBody: yup.array(yup.number()),
-      other: yup.array(yup.number()),
+      head: yup.array(yup.object().shape({ x: yup.number(), y: yup.number() })),
+      backOfBody: yup.array(yup.object().shape({ x: yup.number(), y: yup.number() })),
+      headfrontOfBody: yup.array(yup.object().shape({ x: yup.number(), y: yup.number() })),
+      other: yup.array(yup.object().shape({ x: yup.number(), y: yup.number() })),
     }),
     createdOn: yup.date().default(function () {
       return new Date()
@@ -49,17 +49,18 @@ const AddEditCheckup = () => {
   const { success, errors: checkupErrors, checkup } = useAppSelector(state => state.checkup)
 
   const onSubmit = (values: TCheckupForm) => {
-    if (router.query.addEdit === 'add')
-      dispatch(
-        addCheckup({ ...values, comment: draftToHtml(convertToRaw(desc.getCurrentContent())) })
-      )
-    else
-      dispatch(
-        editCheckup(router.query.addEdit as string, {
-          ...values,
-          comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
-        })
-      )
+    console.log(values)
+    // if (router.query.addEdit === 'add')
+    //   dispatch(
+    //     addCheckup({ ...values, comment: draftToHtml(convertToRaw(desc.getCurrentContent())) })
+    //   )
+    // else
+    //   dispatch(
+    //     editCheckup(router.query.addEdit as string, {
+    //       ...values,
+    //       comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
+    //     })
+    //   )
   }
 
   useEffect(() => {

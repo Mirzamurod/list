@@ -13,10 +13,10 @@ import {
   FormControl,
   FormErrorMessage,
   Text,
-  Image,
 } from '@chakra-ui/react'
 import { TTextareaType } from '@/types/input'
 import ImagePoint from '@/components/ImagePoint'
+import { TCheckupForm } from '@/types/checkup'
 
 const Editor = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false })
 
@@ -33,7 +33,7 @@ const AddEditCard: FC<IProps> = props => {
     register,
     control,
     formState: { errors },
-  } = useFormContext()
+  } = useFormContext<TCheckupForm>()
 
   const inputs: TTextareaType[] = [{ name: 'device' }, { name: 'drugs' }]
 
@@ -51,7 +51,7 @@ const AddEditCard: FC<IProps> = props => {
       >
         {inputs.map(item => (
           <GridItem key={item.name}>
-            <FormControl isInvalid={!!errors?.[item.name]?.message}>
+            <FormControl isInvalid={!!errors?.[item.name as 'drugs']?.message}>
               <FormLabel htmlFor={item.name}>{t(item.label || item.name)}</FormLabel>
               <Textarea
                 {...item}
@@ -61,10 +61,13 @@ const AddEditCard: FC<IProps> = props => {
                 resize='none'
                 id={item.name}
                 as={TextareaAutosize}
+                {...register(item.name as 'drugs')}
                 placeholder={t(item.placeholder || item.label || item.name)}
               />
-              {errors?.[item.name]?.message ? (
-                <FormErrorMessage>{t(errors?.[item.name]?.message as string)}</FormErrorMessage>
+              {errors?.[item.name as 'drugs']?.message ? (
+                <FormErrorMessage>
+                  {t(errors?.[item.name as 'drugs']?.message as string)}
+                </FormErrorMessage>
               ) : null}
             </FormControl>
           </GridItem>
@@ -82,17 +85,17 @@ const AddEditCard: FC<IProps> = props => {
             color={colorMode === 'light' ? '#1A202C' : 'white'}
           >
             {[
-              { image: '/images/xijoma_head_point.jpg', alt: 'head' },
-              { image: '/images/xijoma_front_point.jpg', alt: 'front' },
-              { image: '/images/xijoma_back_point.jpg', alt: 'back' },
-              { image: '/images/xijoma_other_point.jpg', alt: 'hand_foot' },
+              { image: '/images/xijoma_head_point.jpg', alt: 'head', name: 'head' },
+              { image: '/images/xijoma_front_point.jpg', alt: 'front', name: 'backOfBody' },
+              { image: '/images/xijoma_back_point.jpg', alt: 'back', name: 'frontOfBody' },
+              { image: '/images/xijoma_other_point.jpg', alt: 'hand_foot', name: 'other' },
             ].map(item => (
               <Box key={item.image}>
                 <Text>{t(item.alt)}</Text>
                 <Controller
                   control={control}
-                  name=''
-                  render={({ field }) => <ImagePoint {...item} />}
+                  name={`xijoma.${item.name as 'head'}`}
+                  render={({ field }) => <ImagePoint {...item} {...field} />}
                 />
               </Box>
             ))}

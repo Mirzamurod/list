@@ -1,53 +1,39 @@
-import { FC, useState } from 'react'
+import { Ref, forwardRef } from 'react'
 import { Box, Image } from '@chakra-ui/react'
+import { ControllerRenderProps } from 'react-hook-form'
+import { Coordinate } from '@/types/checkup'
 
 interface IProps {
   image: string
   alt: string
-  points?: number[]
 }
 
-interface Circle {
-  x: number
-  y: number
-}
-
-const ImagePoint: FC<IProps> = props => {
-  const { image, alt, points } = props
-  const [circles, setCircles] = useState<Circle[]>([])
+const ImagePoint = forwardRef<Ref<null>, IProps & ControllerRenderProps>((props, ref) => {
+  const { image, alt, value, onChange } = props
 
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
 
-    // Rasm ichida bosilgan joyni aniqlash
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
-    const radius = 10 // Aylanalar radiusi (20px)
+    const radius = 10
 
-    // Mavjud aylana joylashganini aniqlash
-    const existingIndex = circles.findIndex(circle => {
-      const dx = circle.x - x // X koordinata farqi
-      const dy = circle.y - y // Y koordinata farqi
-      const distance = Math.sqrt(dx * dx + dy * dy) // Masofa hisoblash
-      return distance <= radius // Radius ichida joylashgan aylana
+    const existingIndex = value.findIndex((circle: Coordinate) => {
+      const dx = circle.x - x
+      const dy = circle.y - y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      return distance <= radius
     })
 
-    if (existingIndex !== -1) {
-      // Agar aylana mavjud bo'lsa, o'chiramiz
-      setCircles(prev => prev.filter((_, index) => index !== existingIndex))
-    } else {
-      // Agar aylana mavjud bo'lmasa, qo'shamiz
-      setCircles(prev => [...prev, { x, y }])
-    }
+    if (existingIndex !== -1)
+      onChange(value.filter((_: any, index: number) => index !== existingIndex))
+    else onChange([...value, { x, y }])
   }
 
   const handleCircleHover = (existingIndex: number) => {
-    console.log(`Aylana ${existingIndex} ustida hover qildingiz.`)
-    if (existingIndex !== -1) {
-      // Agar aylana mavjud bo'lsa, o'chiramiz
-      setCircles(prev => prev.filter((_, index) => index !== existingIndex))
-    }
+    if (existingIndex !== -1)
+      onChange(value.filter((_: any, index: number) => index !== existingIndex))
   }
 
   return (
@@ -65,18 +51,17 @@ const ImagePoint: FC<IProps> = props => {
       />
 
       {/* Aylanalar */}
-      {circles.map((circle, index) => (
+      {value.map((circle: Coordinate, index: number) => (
         <Box
           key={index}
           sx={{
             position: 'absolute',
-            top: circle.y - 10, // Radiusni hisobga olamiz (top: y - radius)
-            left: circle.x - 10, // Radiusni hisobga olamiz (left: x - radius)
-            width: '20px', // Radiusni ikki marta kenglik
-            height: '20px', // Radiusni ikki marta balandlik
+            top: circle.y - 10,
+            left: circle.x - 10,
+            width: '20px',
+            height: '20px',
             border: '3px solid red',
             borderRadius: '50%',
-            // pointerEvents: 'none', // Aylanani bosib bo'lmaydi
             cursor: 'pointer',
           }}
           onClick={() => handleCircleHover(index)}
@@ -84,6 +69,6 @@ const ImagePoint: FC<IProps> = props => {
       ))}
     </Box>
   )
-}
+})
 
 export default ImagePoint

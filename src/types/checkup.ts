@@ -9,15 +9,20 @@ export type TCheckupState = {
   pageCount: number
 }
 
+export type Coordinate = {
+  x: number
+  y: number
+}
+
 export type TCheckup = {
   _id: string
   device?: string
   drugs?: string
   xijoma?: {
-    head?: number[]
-    backOfBody?: number[]
-    frontOfBody?: number[]
-    other?: number[]
+    head?: Coordinate[]
+    backOfBody?: Coordinate[]
+    frontOfBody?: Coordinate[]
+    other?: Coordinate[]
   }
   comment?: string
   createdOn?: Date
@@ -28,10 +33,10 @@ export type TCheckupForm = {
   device?: string
   drugs?: string
   xijoma?: {
-    head?: number[]
-    backOfBody?: number[]
-    frontOfBody?: number[]
-    other?: number[]
+    head?: Coordinate[]
+    backOfBody?: Coordinate[]
+    frontOfBody?: Coordinate[]
+    other?: Coordinate[]
   }
   comment?: string
   createdOn?: Date
@@ -41,10 +46,10 @@ export type TCheckupEditForm = {
   device?: string
   drugs?: string
   xijoma?: {
-    head?: number[]
-    backOfBody?: number[]
-    frontOfBody?: number[]
-    other?: number[]
+    head?: Coordinate[]
+    backOfBody?: Coordinate[]
+    frontOfBody?: Coordinate[]
+    other?: Coordinate[]
   }
   comment?: string
   createdOn?: Date

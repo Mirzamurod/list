@@ -32,9 +32,7 @@ export const userLoginField = [
 ]
 
 export const clientAddField = [
-  check('name').notEmpty().withMessage('name_required').bail().trim(),
-  check('phone').notEmpty().withMessage('phone_required').bail().trim(),
-  check('year').notEmpty().withMessage('name_required').bail().trim(),
-  check('address').notEmpty().withMessage('phone_required').bail().trim(),
-  check('comment'),
+  check('device'),
+  check('drugs'),
+  
 ]
