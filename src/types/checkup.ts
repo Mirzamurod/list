@@ -27,6 +27,7 @@ export type TCheckup = {
   comment?: string
   createdOn?: Date
   userId: string
+  clientId: string
 }
 
 export type TCheckupForm = {
@@ -40,6 +41,7 @@ export type TCheckupForm = {
   }
   comment?: string
   createdOn?: Date
+  clientId: string
 }
 
 export type TCheckupEditForm = {

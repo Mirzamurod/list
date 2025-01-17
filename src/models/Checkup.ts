@@ -5,10 +5,10 @@ const checkupSchema = new mongoose.Schema(
     device: { type: String, trim: true },
     drugs: { type: String, trim: true }, // dorilar
     xijoma: {
-      head: { type: [Number] },
-      backOfBody: { type: [Number] },
-      frontOfBody: { type: [Number] },
-      other: { type: [Number] },
+      head: [{ x: { type: Number, trim: true }, y: { type: Number, trim: true } }],
+      backOfBody: [{ x: { type: Number, trim: true }, y: { type: Number, trim: true } }],
+      frontOfBody: [{ x: { type: Number, trim: true }, y: { type: Number, trim: true } }],
+      other: [{ x: { type: Number, trim: true }, y: { type: Number, trim: true } }],
     },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
     clientId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'registries' },

@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import { Box, Button, Heading, Stack } from '@chakra-ui/react'
+import { Box, Button, Heading, Stack, useToast } from '@chakra-ui/react'
 import { useAppSelector } from '@/store'
 import AddEditCard from '@/view/checkup/AddEditCard'
 import AddEditAction from '@/view/checkup/AddEditAction'
@@ -19,6 +19,7 @@ const AddEditCheckup = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const dispatch = useDispatch()
+  const toast = useToast()
   const formSchema = yup.object().shape({
     device: yup.string(),
     drugs: yup.string(),
@@ -50,17 +51,38 @@ const AddEditCheckup = () => {
 
   const onSubmit = (values: TCheckupForm) => {
     console.log(values)
-    // if (router.query.addEdit === 'add')
-    //   dispatch(
-    //     addCheckup({ ...values, comment: draftToHtml(convertToRaw(desc.getCurrentContent())) })
-    //   )
-    // else
-    //   dispatch(
-    //     editCheckup(router.query.addEdit as string, {
-    //       ...values,
-    //       comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
-    //     })
-    //   )
+    if (
+      values?.device?.length ||
+      values?.drugs?.length ||
+      values?.xijoma?.head?.length ||
+      values?.xijoma?.frontOfBody?.length ||
+      values?.xijoma?.backOfBody?.length ||
+      values?.xijoma?.other?.length
+    ) {
+      if (router.query.addEdit === 'add')
+        dispatch(
+          addCheckup({
+            ...values,
+            clientId: router.query.id as string,
+            comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
+          })
+        )
+      // else
+      //   dispatch(
+      //     editCheckup(router.query.addEdit as string, {
+      //       ...values,
+      // clientId: router.query.id as string,
+      //       comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
+      //     })
+      //   )
+    } else
+      toast({
+        title: t('must_one_item'),
+        status: 'warning',
+        position: 'top-right',
+        isClosable: true,
+        variant: 'left-accent',
+      })
   }
 
   useEffect(() => {
