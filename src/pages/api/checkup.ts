@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import dbConnect from '@/lib/db'
 import Checkup from '@/models/Checkup'
 import { admin, protect } from '@/middleware/auth'
-import mongoose, { SortOrder } from 'mongoose'
+import { SortOrder } from 'mongoose'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -40,42 +40,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           clientId,
         } = req.query
 
-        const clientObjectId = mongoose.Types.ObjectId.isValid(clientId as string)
-          ? new mongoose.Types.ObjectId(clientId as string)
-          : null
-        const userObjectId =
-          req.user?._id && mongoose.Types.ObjectId.isValid(req.user._id)
-            ? new mongoose.Types.ObjectId(req.user._id)
-            : null
-
-        if (!clientObjectId || !userObjectId) {
-          return res.status(400).json({ success: false, message: 'Invalid clientId or userId' })
-        }
-
-        console.log(clientObjectId)
-        console.log(userObjectId)
-
         if (id) {
           await Checkup.findById(id)
             .then(response => res.status(200).json({ data: response }))
             .catch(error => res.status(400).json({ success: false, message: error.message }))
         } else {
           const checkups = await Checkup.find({
-            userId: userObjectId,
-            clientId: clientObjectId,
+            userId: req.user?._id,
+            clientId,
             ...(searchName
               ? { [searchName as string]: { $regex: search ?? '', $options: 'i' } }
-              : { name: { $regex: search ?? '', $options: 'i' } }),
+              : { drugs: { $regex: search ?? '', $options: 'i' } }),
           })
             .sort({ updatedAt: -1, [sortName as string]: (sortValue as SortOrder) ?? 1 })
             .limit(+limit)
             .skip(+limit * (+page - 1))
 
           const pageLists = Math.ceil(
-            (await Checkup.countDocuments({
-              userId: userObjectId,
-              clientId: clientObjectId,
-            })) / +limit
+            (await Checkup.countDocuments({ userId: req.user?._id, clientId })) / +limit
           )
 
           res
@@ -91,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await admin(req, res, async () => {
         const { id } = req.query
         await Checkup.findByIdAndUpdate(id, req.body, { new: true })
-          .then(() => res.status(200).json({ success: true, message: 'client_updated' }))
+          .then(() => res.status(200).json({ success: true, message: 'checkup_updated' }))
           .catch(error => res.status(400).json({ success: false, message: error.message }))
       })
     })
@@ -102,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await admin(req, res, async () => {
         const { id } = req.query
         await Checkup.findByIdAndDelete(id)
-          .then(() => res.status(200).json({ success: true, message: 'client_deleted' }))
+          .then(() => res.status(200).json({ success: true, message: 'checkup_deleted' }))
           .catch(error => res.status(400).json({ success: false, message: error.message }))
       })
     })

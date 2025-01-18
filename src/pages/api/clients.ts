@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .skip(+limit * (+page - 1))
 
           const pageLists = Math.ceil(
-            (await Registry.find({ userId: req.user?._id })).length / +limit
+            (await Registry.countDocuments({ userId: req.user?._id })) / +limit
           )
 
           res

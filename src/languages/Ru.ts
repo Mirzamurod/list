@@ -98,6 +98,23 @@ const ru = {
   customer_information: 'Информация для клиентов',
   show_less: 'Показать меньше',
   checkup: 'Сеансы',
+  link: 'Ссылка',
+  device: 'Диагностика',
+  drugs: 'Лекарства',
+  xijoma: 'Хиджама',
+  createdOn: 'Дата',
+  view_checkup: 'Посмотреть сеансы',
+  edit_checkup: 'Редактировать сеансы',
+  delete_checkup: 'Удалить сеансы',
+  add_checkup: 'Добавить сеансы',
+  xijoma_points: 'Хиджама точки',
+  head: 'Голова',
+  front: 'Передняя часть тела',
+  back: 'Задняя часть тела',
+  hand_foot: 'Рука, нога',
+  go_to_checkup: 'Перейти к сеансы',
+  checkup_information: 'Информация о сеансы',
+  view_client: 'Посмотреть клиента',
 }
 
 export default ru

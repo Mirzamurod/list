@@ -100,6 +100,23 @@ const eng = {
   customer_information: 'Customer information',
   show_less: 'Show less',
   checkup: 'Check up',
+  link: 'Link',
+  device: 'Diagnostic',
+  drugs: 'Drugs',
+  xijoma: 'Xijoma',
+  createdOn: 'Date',
+  view_checkup: 'View checkup',
+  edit_checkup: 'Edit checkup',
+  delete_checkup: 'Delete checkup',
+  add_checkup: 'Add Checkup',
+  xijoma_points: 'Xijoma points',
+  head: 'Head',
+  front: 'Front of body',
+  back: 'Back of body',
+  hand_foot: 'Hand, foot',
+  go_to_checkup: 'Go to checkup',
+  checkup_information: 'Checkup information',
+  view_client: 'View client',
 }
 
 export type TranslationKeys = keyof typeof eng

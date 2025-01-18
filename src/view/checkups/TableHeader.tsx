@@ -24,13 +24,13 @@ const TableHeader: FC<IProps> = props => {
       <Text fontSize='xl' mb={2}>
         {client?.name}
       </Text>
-      <Stack mb={4} justifyContent='space-between' flexDirection={{ base: 'column', md: 'row' }}>
-        <Input
+      <Stack mb={4} justifyContent='end' flexDirection={{ base: 'column', md: 'row' }}>
+        {/* <Input
           width='auto'
           value={search}
           placeholder={t('search')}
           onChange={({ target }) => setSearch(target.value)}
-        />
+        /> */}
         <Stack gap={2} flexDirection={{ base: 'column', md: 'row' }}>
           <Button
             as={Link}

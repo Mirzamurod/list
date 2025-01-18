@@ -55,4 +55,5 @@ export type TCheckupEditForm = {
   }
   comment?: string
   createdOn?: Date
+  clientId: string
 }

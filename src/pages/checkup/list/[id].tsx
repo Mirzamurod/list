@@ -27,7 +27,7 @@ const CheckupClient = () => {
         limit: router.query.limit || 10,
         sortName: ordering?.field,
         sortValue: ordering?.sort,
-        search: inputValue,
+        // search: inputValue,
         clientId: router.query.id,
       })
     )
@@ -41,7 +41,7 @@ const CheckupClient = () => {
           limit: router.query.limit || 10,
           sortName: ordering?.field,
           sortValue: ordering?.sort,
-          search: inputValue,
+          // search: inputValue,
           clientId: router.query.id,
         })
       )
@@ -61,9 +61,9 @@ const CheckupClient = () => {
     }
   }, [search])
 
-  // useEffect(() => {
-  //   dispatch(getClient(router.query.id as string))
-  // }, [])
+  useEffect(() => {
+    dispatch(getClient(router.query.id as string))
+  }, [])
 
   const onChange = (item: { [value: string]: string | string[] | number }) =>
     router.replace({ query: { ...router.query, ...item } }, undefined, { shallow: true })

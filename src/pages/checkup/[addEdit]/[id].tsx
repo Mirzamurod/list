@@ -8,12 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import { Box, Button, Heading, Stack, useToast } from '@chakra-ui/react'
+import { Box, Button, Heading, Stack, Text, useToast } from '@chakra-ui/react'
 import { useAppSelector } from '@/store'
 import AddEditCard from '@/view/checkup/AddEditCard'
 import AddEditAction from '@/view/checkup/AddEditAction'
 import { addCheckup, editCheckup, getCheckup } from '@/store/checkup'
 import { TCheckupForm } from '@/types/checkup'
+import { getClient } from '@/store/client'
 
 const AddEditCheckup = () => {
   const { t } = useTranslation()
@@ -48,9 +49,9 @@ const AddEditCheckup = () => {
   const { handleSubmit, setValue, setError, reset } = methods
 
   const { success, errors: checkupErrors, checkup } = useAppSelector(state => state.checkup)
+  const { client } = useAppSelector(state => state.client)
 
   const onSubmit = (values: TCheckupForm) => {
-    console.log(values)
     if (
       values?.device?.length ||
       values?.drugs?.length ||
@@ -67,14 +68,14 @@ const AddEditCheckup = () => {
             comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
           })
         )
-      // else
-      //   dispatch(
-      //     editCheckup(router.query.addEdit as string, {
-      //       ...values,
-      // clientId: router.query.id as string,
-      //       comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
-      //     })
-      //   )
+      else
+        dispatch(
+          editCheckup(router.query.addEdit as string, {
+            ...values,
+            clientId: router.query.id as string,
+            comment: draftToHtml(convertToRaw(desc.getCurrentContent())),
+          })
+        )
     } else
       toast({
         title: t('must_one_item'),
@@ -118,11 +119,18 @@ const AddEditCheckup = () => {
       )
   }, [checkupErrors])
 
+  useEffect(() => {
+    dispatch(getClient(router.query.id as string))
+  }, [])
+
   return (
     <FormProvider {...methods}>
       <Box>
         <Stack mb={4} justifyContent='space-between' flexDirection={{ base: 'column', md: 'row' }}>
-          <Heading>{t(router.query.addEdit === 'add' ? 'add_checkup' : 'edit_checkup')}</Heading>
+          <Box>
+            <Heading>{t(router.query.addEdit === 'add' ? 'add_checkup' : 'edit_checkup')}</Heading>
+            <Text fontSize='xl'>{client?.name}</Text>
+          </Box>
           <Button as={Link} href={`/checkup/list/${router.query.id}?page=1&limit=10`}>
             {t('go_to_checkup')}
           </Button>

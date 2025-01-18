@@ -98,6 +98,23 @@ const uz = {
   customer_information: "Mijoz ma'lumotlari",
   show_less: "Kamroq ko'rsatish",
   checkup: 'Seanslar',
+  link: 'Havola',
+  device: 'Diagnostika',
+  drugs: 'Dorilar',
+  xijoma: 'Xijoma',
+  createdOn: 'Kun',
+  view_checkup: "Seansni ko'rish",
+  edit_checkup: "Seansni o'zgartirish",
+  delete_checkup: "Seansni o'chirish",
+  add_checkup: "Seans qo'shish",
+  xijoma_points: 'Xijoma nuqtalari',
+  head: 'Bosh',
+  front: 'Tananing oldi',
+  back: 'Tananing orqasi',
+  hand_foot: "Qo'l, oyoq",
+  go_to_checkup: "Seanslarga o'tish",
+  checkup_information: "Seans ma'lumotlari",
+  view_client: "Klientni ko'rish",
 }
 
 export default uz
