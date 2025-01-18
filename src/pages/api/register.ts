@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import * as jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
 import { validationResult } from 'express-validator'
 import dbConnect from '@/lib/db'
@@ -26,15 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const hashedPassword = await bcryptjs.hash(password, salt)
 
         await User.create({ ...req.body, password: hashedPassword })
-          .then(() => res.status(200).json({ message: 'User added', success: true }))
+          .then(() => res.status(200).json({ message: 'user_added', success: true }))
           .catch(error => res.status(400).json({ success: false, message: error.message }))
       } else
         res
           .status(400)
-          .json({ message: [{ msg: 'User already exists', param: 'phone' }], success: false })
+          .json({ message: [{ msg: 'user_already_exists', param: 'phone' }], success: false })
     })
   } else res.status(404).json('')
 }
-
-const generateToken = (id: string) =>
-  jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '14d' })

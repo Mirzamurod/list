@@ -115,6 +115,10 @@ const uz = {
   go_to_checkup: "Seanslarga o'tish",
   checkup_information: "Seans ma'lumotlari",
   view_client: "Klientni ko'rish",
+  checkup_added: "Seans muvaffaqiyatli qo'shildi",
+  must_one_item: "Kamida bittasini to'ldirilishi kerak",
+  checkup_updated: "Seans muvaffaqiyatli o'zgartirildi",
+  checkup_deleted: "Seans muvaffaqiyatli o'chirildi",
 }
 
 export default uz

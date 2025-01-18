@@ -115,6 +115,10 @@ const ru = {
   go_to_checkup: 'Перейти к сеансы',
   checkup_information: 'Информация о сеансы',
   view_client: 'Посмотреть клиента',
+  checkup_added: 'Сеансы успешно добавлена',
+  must_one_item: 'Необходимо заполнить хотя бы одно поле.',
+  checkup_updated: 'Сеансы успешно обновлена',
+  checkup_deleted: 'Сеансы успешно удалена',
 }
 
 export default ru

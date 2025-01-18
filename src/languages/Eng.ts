@@ -117,6 +117,10 @@ const eng = {
   go_to_checkup: 'Go to checkup',
   checkup_information: 'Checkup information',
   view_client: 'View client',
+  checkup_added: 'Checkup successfully added',
+  must_one_item: 'At least one must be filled in.',
+  checkup_updated: 'Checkup successfully updated',
+  checkup_deleted: 'Checkup successfully deleted',
 }
 
 export type TranslationKeys = keyof typeof eng
