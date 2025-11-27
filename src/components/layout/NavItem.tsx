@@ -1,9 +1,11 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import type { TNavbar } from '@/types/navbar'
+
+import { memo, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { ListIcon, Link as LinkChakra, Heading, Box, Badge, Text } from '@chakra-ui/react'
-import { TNavbar } from '@/types/navbar'
 
 interface IProps {
   setIsOpen: (value: boolean) => void
@@ -11,15 +13,19 @@ interface IProps {
   collapse: boolean
 }
 
-const NavItem: FC<IProps> = ({ item, collapse, setIsOpen }) => {
+const NavItemComponent: FC<IProps> = ({ item, collapse, setIsOpen }) => {
   const { label } = item
   const router = useRouter()
   const { t } = useTranslation()
+  const isLinkItem = item.type === 'link'
+  const linkHref = isLinkItem && 'link' in item ? item.link : ''
+  const isActive = useMemo(() => {
+    if (!isLinkItem || !linkHref) return false
+    return router.pathname === linkHref || router.asPath === linkHref
+  }, [isLinkItem, linkHref, router.asPath, router.pathname])
 
-  if (item.type === 'link') {
+  if (isLinkItem) {
     const { icon, notifications, pathname, query, link } = item
-
-    const isActive = router.pathname === link || router.asPath === link
 
     return (
       <Box display='flex' alignItems='center' my={1} justifyContent='center'>
@@ -59,18 +65,21 @@ const NavItem: FC<IProps> = ({ item, collapse, setIsOpen }) => {
 
   return (
     <Heading
-      color='gray.400'
-      fontWeight='medium'
-      textTransform='uppercase'
-      fontSize='sm'
-      borderTopWidth={collapse ? 0 : 1}
-      borderColor='gray.100'
       mt={5}
       mb={3}
+      fontSize='sm'
+      color='gray.400'
+      fontWeight='medium'
+      borderColor='gray.100'
+      textTransform='uppercase'
+      borderTopWidth={collapse ? 0 : 1}
     >
       <Text display={collapse ? 'flex' : 'none'}>{t(label)}</Text>
     </Heading>
   )
 }
+
+const NavItem = memo(NavItemComponent)
+NavItem.displayName = 'NavItem'
 
 export default NavItem

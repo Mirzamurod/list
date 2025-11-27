@@ -1,7 +1,8 @@
+import type { UserDataType } from '@/types/user'
+
+import { memo, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
-import { UserDataType } from '@/types/user'
 import { MdOutlineMoreHoriz } from 'react-icons/md'
 import {
   Avatar,
@@ -16,17 +17,21 @@ import {
 } from '@chakra-ui/react'
 import { deleteUser } from '@/store/user/login'
 
-export const AvatarBox = ({ collapse, user }: { collapse: boolean; user: UserDataType }) => {
+const AvatarBoxComponent = ({ collapse, user }: { collapse: boolean; user: UserDataType }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
 
+  const handleLogout = useCallback(() => {
+    dispatch(deleteUser())
+  }, [dispatch])
+
   return (
     <Flex
-      w='full'
       pt={2}
+      gap={2}
+      w='full'
       alignItems='center'
       justifyContent='space-between'
-      gap={2}
       flexDirection={collapse ? 'row' : 'column-reverse'}
     >
       {collapse ? (
@@ -51,12 +56,12 @@ export const AvatarBox = ({ collapse, user }: { collapse: boolean; user: UserDat
           fontSize={20}
         />
         <MenuList>
-          {/* <MenuItem as={Link} href='/settings'>
-            {t('settings')}
-          </MenuItem> */}
-          <MenuItem onClick={() => dispatch(deleteUser())}>{t('logout')}</MenuItem>
+          <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
         </MenuList>
       </Menu>
     </Flex>
   )
 }
+
+export const AvatarBox = memo(AvatarBoxComponent)
+AvatarBox.displayName = 'AvatarBox'

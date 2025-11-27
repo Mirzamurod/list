@@ -1,7 +1,9 @@
-import { Ref, forwardRef } from 'react'
+import type { MouseEvent, Ref } from 'react'
+import type { ControllerRenderProps } from 'react-hook-form'
+import type { Coordinate } from '@/types/checkup'
+
+import { forwardRef } from 'react'
 import { Box, Image } from '@chakra-ui/react'
-import { ControllerRenderProps } from 'react-hook-form'
-import { Coordinate } from '@/types/checkup'
 
 interface IProps {
   image: string
@@ -11,7 +13,7 @@ interface IProps {
 const ImagePoint = forwardRef<Ref<null>, IProps & ControllerRenderProps>((props, ref) => {
   const { image, alt, value, onChange } = props
 
-  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleImageClick = (e: MouseEvent<HTMLImageElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
 
     const x = e.clientX - rect.left
@@ -42,6 +44,7 @@ const ImagePoint = forwardRef<Ref<null>, IProps & ControllerRenderProps>((props,
       <Image
         src={image}
         alt={alt}
+        loading='lazy'
         sx={{
           display: 'block',
           maxWidth: '100%',

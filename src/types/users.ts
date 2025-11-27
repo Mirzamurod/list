@@ -1,4 +1,4 @@
-import { TError } from "./error"
+import type { TError } from "./error"
 
 export type TUsersState = {
   isLoading: boolean

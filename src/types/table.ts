@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import { StyleProps, TableCellProps } from '@chakra-ui/react'
+import type { ReactNode } from 'react'
+import type { StyleProps, TableCellProps } from '@chakra-ui/react'
 
 export type TTable = {
   data: any[]
@@ -12,6 +12,10 @@ export type TTable = {
   onSortModelChange?: (value: TSortModel | null) => void
   paginationModel?: { page: number; pageSize: number }
   onPaginationModelChange?: (value: { page: number; pageSize: number }) => void
+  virtualize?: boolean
+  virtualizeThreshold?: number
+  virtualizeRowHeight?: number
+  virtualizeMaxHeight?: number
 }
 
 export type TColumns = {

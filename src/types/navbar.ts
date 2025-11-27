@@ -1,4 +1,4 @@
-import { IconType } from 'react-icons/lib'
+import type { IconType } from 'react-icons/lib'
 
 export type TNavbar = {
   type: 'link' | 'heading'

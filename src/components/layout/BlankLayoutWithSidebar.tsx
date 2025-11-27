@@ -1,11 +1,15 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import type { IBlankLayoutWithSidebar } from '@/types/blankLayout'
+import type { Language } from '@/types/language'
+
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
 import i18next from 'i18next'
 import {
   Box,
   Button,
   Flex,
   HStack,
-  Icon,
   IconButton,
   List,
   ListItem,
@@ -17,18 +21,20 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { TbPerfume } from 'react-icons/tb'
-import { IBlankLayoutWithSidebar } from '@/types/blankLayout'
 import navbar from '@/navigation/vertical'
 import NavItem from './NavItem'
 import { AvatarBox } from './AvatarBox'
 import { MdMenu, MdOutlineDarkMode, MdSunny } from 'react-icons/md'
 import { useAppSelector } from '@/store'
 import { useLanguage } from '@/context/LanguageContext'
-import { Language } from '@/types/language'
 import { CloseIcon } from '@chakra-ui/icons'
 import themeConfig from '@/configs/themeConfig'
-import Image from 'next/image'
+
+const languageOptions: Language[] = [
+  { lang: 'uz', name: 'Uz' },
+  { lang: 'ru', name: 'Ru' },
+  { lang: 'eng', name: 'Eng' },
+]
 
 const BlankLayoutWithSidebar: FC<IBlankLayoutWithSidebar> = props => {
   const { children } = props
@@ -41,54 +47,59 @@ const BlankLayoutWithSidebar: FC<IBlankLayoutWithSidebar> = props => {
 
   const { user } = useAppSelector(state => state.login)
 
-  const selectLang = ({ lang, name }: Language) => {
-    i18next.changeLanguage(lang)
-    setLanguage({ lang, name })
-  }
+  const navItems = useMemo(() => {
+    if (!user?.role) return []
+    return navbar[user.role] ?? []
+  }, [user?.role])
 
-  const changeMenu = () => {
-    if (windowWidth > 991) setCollapse(!collapse)
-    else setIsOpen(!isOpen)
-  }
+  const selectLang = useCallback(
+    ({ lang, name }: Language) => {
+      i18next.changeLanguage(lang)
+      setLanguage({ lang, name })
+    },
+    [setLanguage]
+  )
+
+  const changeMenu = useCallback(() => {
+    if (windowWidth > 991) setCollapse(prev => !prev)
+    else setIsOpen(prev => !prev)
+  }, [windowWidth])
+
+  const updateWindowWidth = useCallback(() => {
+    const width = window.innerWidth
+    setWindowWidth(width)
+    if (width > 991) setIsOpen(false)
+  }, [])
 
   useEffect(() => {
-    const getWindowWidth = () => {
-      return window.innerWidth
-    }
-
-    const updateWindowWidth = () => {
-      setWindowWidth(getWindowWidth())
-      if (getWindowWidth() > 991) setIsOpen(false)
-    }
-
-    window.addEventListener('resize', updateWindowWidth)
     updateWindowWidth()
+    window.addEventListener('resize', updateWindowWidth)
 
     return () => window.removeEventListener('resize', updateWindowWidth)
-  }, [])
+  }, [updateWindowWidth])
 
   return (
     <HStack w='full' h='100vh' padding={5}>
       {/* Sidebar */}
       <Flex
+        top={5}
         w='full'
-        h={{ base: 'auto', lg: 'full' }}
         as='aside'
+        bottom={5}
+        zIndex={4}
         padding={6}
         border='1px'
         overflow='auto'
-        borderRadius={{ base: '6px', lg: '2xl' }}
+        bgColor={bgcolor}
         alignItems='start'
         flexDirection='column'
         maxW={collapse ? 350 : 100}
         transition='ease-in-out .2s'
         justifyContent='space-between'
-        bgColor={bgcolor}
-        display={{ base: isOpen ? 'flex' : 'none', lg: 'flex' }}
+        h={{ base: 'auto', lg: 'full' }}
+        borderRadius={{ base: '6px', lg: '2xl' }}
         position={isOpen ? 'absolute' : 'inherit'}
-        bottom={5}
-        top={5}
-        zIndex={4}
+        display={{ base: isOpen ? 'flex' : 'none', lg: 'flex' }}
       >
         <Box w='full'>
           {/* Logo */}
@@ -110,16 +121,16 @@ const BlankLayoutWithSidebar: FC<IBlankLayoutWithSidebar> = props => {
             </Box>
             <Box display={{ lg: 'none' }}>
               <IconButton
+                variant='ghost'
                 aria-label='exit'
                 icon={<CloseIcon />}
-                variant='ghost'
                 onClick={() => setIsOpen(!isOpen)}
               />
             </Box>
           </Flex>
           {/* Navigation */}
           <List w='full' my={3}>
-            {navbar[user?.role!]?.map(item => (
+            {navItems.map(item => (
               <ListItem key={item.label + item.type}>
                 <NavItem item={item} collapse={collapse} setIsOpen={setIsOpen} />
               </ListItem>
@@ -133,10 +144,10 @@ const BlankLayoutWithSidebar: FC<IBlankLayoutWithSidebar> = props => {
         as='main'
         w='full'
         h='full'
-        border={{ base: '0px', lg: '1px' }}
+        overflow='auto'
         position='relative'
         borderRadius={{ lg: '2xl' }}
-        overflow='auto'
+        border={{ base: '0px', lg: '1px' }}
       >
         <Flex mx={{ base: 0, lg: 4 }} mt={{ base: 0, lg: 4 }} justifyContent='space-between'>
           <IconButton aria-label='Menu Collapse' icon={<MdMenu />} onClick={changeMenu} />
@@ -150,11 +161,7 @@ const BlankLayoutWithSidebar: FC<IBlankLayoutWithSidebar> = props => {
             <Menu>
               <MenuButton as={Button}>{language.name}</MenuButton>
               <MenuList>
-                {[
-                  { lang: 'uz', name: 'Uz' },
-                  { lang: 'ru', name: 'Ru' },
-                  { lang: 'eng', name: 'Eng' },
-                ].map(item => (
+                {languageOptions.map(item => (
                   <MenuItem onClick={() => selectLang(item as Language)} key={item.lang}>
                     {item.name}
                   </MenuItem>

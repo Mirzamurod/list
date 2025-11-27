@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import type { Coordinate } from '@/types/checkup'
+
 import { Box, Image } from '@chakra-ui/react'
-import { Coordinate } from '@/types/checkup'
 
 interface IProps {
   image: string
@@ -14,7 +15,12 @@ const ImagePointView: FC<IProps> = props => {
   return (
     <Box sx={{ position: 'relative', display: 'inline-block', mb: 2 }}>
       {/* Rasm */}
-      <Image src={image} alt={alt} sx={{ display: 'block', maxWidth: '100%', height: 'auto' }} />
+      <Image
+        alt={alt}
+        src={image}
+        loading='lazy'
+        sx={{ display: 'block', maxWidth: '100%', height: 'auto' }}
+      />
 
       {/* Aylanalar */}
       {points?.map((circle, index) => (

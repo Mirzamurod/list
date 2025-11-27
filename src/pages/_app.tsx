@@ -1,18 +1,19 @@
 // React Imports
-import { Fragment, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { Fragment } from 'react'
 
 // Next Imports
 import type { NextPage } from 'next'
 import { Router } from 'next/router'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
 
 // Next-i18next
 import { appWithTranslation } from 'next-i18next'
 
 // Loader Import
 import NProgress from 'nprogress'
-import NextNProgress from 'nextjs-progressbar'
 
 // Config Imports
 import themeConfig from '@/configs/themeConfig'
@@ -34,6 +35,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import '/node_modules/flag-icons/css/flag-icons.min.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import '@/styles/globals.scss'
+
+const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), { ssr: false })
 
 type ExtendedAppProps = AppProps & {
   Component: NextPage
@@ -105,7 +108,7 @@ const App = (props: ExtendedAppProps) => {
             <ThemeComponent>
               <WindowWrapper>
                 <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                  <NextNProgress color={themeConfig.themeColor} />
+                  <DynamicNextNProgress color={themeConfig.themeColor} />
                   {getLayout(<Component {...pageProps} />)}
                 </Guard>
               </WindowWrapper>

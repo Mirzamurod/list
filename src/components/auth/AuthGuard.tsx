@@ -1,5 +1,7 @@
 // React Imports
-import { Fragment, ReactElement, ReactNode, useEffect } from 'react'
+import type { FC, ReactNode, ReactElement } from 'react'
+
+import { Fragment, useEffect, useMemo } from 'react'
 
 // Next Import
 import { useRouter } from 'next/router'
@@ -21,19 +23,18 @@ const AuthGuard = (props: AuthGuardProps) => {
 
   const { user } = useSelector((state: RootState) => state.login)
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
+  const shouldRedirectToLogin = useMemo(() => {
+    if (typeof window === 'undefined') return false
+    return user === null && !window.localStorage.getItem('list')
+  }, [user])
 
-    if (typeof window !== 'undefined') {
-      if (user === null && !window.localStorage.getItem('list')!) {
-        if (router.asPath !== '/')
-          router.replace({ pathname: '/login', query: { returnUrl: router.asPath } })
-        else router.replace('/login')
-      }
-    }
-  }, [router])
+  useEffect(() => {
+    if (!router.isReady || !shouldRedirectToLogin) return
+
+    if (router.asPath !== '/')
+      router.replace({ pathname: '/login', query: { returnUrl: router.asPath } })
+    else router.replace('/login')
+  }, [router, shouldRedirectToLogin])
 
   if (auth.loading || user === null) {
     return fallback

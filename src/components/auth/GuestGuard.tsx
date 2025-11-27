@@ -1,11 +1,11 @@
 // React Import
-import { FC, Fragment, ReactElement, ReactNode, useEffect } from 'react'
+import type { FC, ReactNode, ReactElement } from 'react'
+
+import { Fragment, useMemo } from 'react'
 
 // Next Import
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/useAuth'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/store'
 
 interface GuestGuard {
   children: ReactNode
@@ -17,20 +17,12 @@ const GuestGuard: FC<GuestGuard> = props => {
   const auth = useAuth()
   const router = useRouter()
 
-  // const { user } = useSelector((state: RootState) => state.login)
+  const shouldBlockGuest = useMemo(() => {
+    if (auth.loading) return true
+    return auth.user !== null
+  }, [auth.loading, auth.user])
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    // if (window.localStorage.getItem('token')) {
-    //   router.replace('/')
-    // }
-  }, [router.route])
-
-  if (auth.loading || (!auth.loading && auth.user !== null)) {
-    // if (auth.loading) {
+  if (!router.isReady || shouldBlockGuest) {
     return fallback
   }
 

@@ -1,27 +1,23 @@
 // React Imports
-import { FC, Fragment, ReactNode, useEffect, useState } from 'react'
+import type { FC, ReactNode } from 'react'
 
-// Next Import
-import { useRouter } from 'next/router'
+import { Fragment, useEffect, useState } from 'react'
 
 interface Props {
   children: ReactNode
 }
 
 const WindowWrapper: FC<Props> = ({ children }) => {
-  // State
   const [windowReadyFlag, setWindowReadyFlag] = useState<boolean>(false)
-
-  const router = useRouter()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setWindowReadyFlag(true)
     }
-  }, [router.route])
+  }, [])
 
-  if (windowReadyFlag) return <Fragment>{children}</Fragment>
-  else return null
+  if (!windowReadyFlag) return null
+  return <Fragment>{children}</Fragment>
 }
 
 export default WindowWrapper
