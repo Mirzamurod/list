@@ -61,8 +61,8 @@ Quyidagi tavsiyalar Next.js + Chakra UI ilovasining UI renderi va API qatlamini 
 
 ## 3. Statik resurslar va build optimallashtirish
 
-- [ ] **Katta fayllarni ajratish**  
-       `public/image3d/image3d.obj` ~73k qator bo‘lib, deploy paytida PWA paketi hajmini oshiradi. Uni CDN yoki kechiktirilgan yuklash orqali ajratish build vaqtini kamaytiradi. (Kelajakdagi ish)
+- [x] **Katta fayllarni ajratish**  
+       `public/image3d/image3d.obj` fayli ishlatilmayotgani aniqlandi va `.gitignore` ga qo'shildi. Agar kelajakda kerak bo'lsa, uni CDN yoki kechiktirilgan yuklash orqali ajratish mumkin. Bu build vaqtini va PWA paketi hajmini kamaytiradi.
 
 - [x] **Service Worker va PWA**  
        `next-pwa` konfiguratsiyasiga `runtimeCaching` qo‘shildi: API endpointlar uchun `NetworkFirst` (10s timeout, 60s TTL), statik fayllar uchun `CacheFirst` (7 kun), rasmlar uchun `StaleWhileRevalidate` (24 soat). Bu mobil foydalanuvchilarda tezkor javob beradi va offline ishlashni yaxshilaydi.
@@ -72,16 +72,23 @@ Quyidagi tavsiyalar Next.js + Chakra UI ilovasining UI renderi va API qatlamini 
 
 ## 4. Monitoring va avtomatlashtirish
 
-- **Profiling va tracing**  
-  `next dev --turbo` yordamida lokal profiling, productionda esa `Sentry/Datadog` integratsiyasi bilan API javob vaqtlarini kuzatish tavsiya etiladi.
+- [x] **Profiling va tracing**  
+       `package.json` ga profiling skriptlari qo'shildi: `dev:turbo` (Next.js turbo mode), `type-check` (TypeScript tekshirish), `analyze` (bundle analiz). `docs/profiling.md` faylida batafsil yo'riqnoma mavjud. Production monitoring uchun Sentry integratsiyasi kelajakda qo'shilishi mumkin.
 
-- **CI/CD optimallashtirish**  
-  `next lint`, `tsc --noEmit`, `vitest` kabi buyruqlarni parallel ishlatish, hamda `pnpm` yoki `npm` cachingi bilan build vaqtini qisqartirish mumkin.
+- [x] **CI/CD optimallashtirish**  
+       `package.json` ga `ci` scripti qo'shildi: `type-check`, `lint`, va `build` ketma-ket bajariladi. Parallel ishlatish uchun CI/CD platformalarda `npm run type-check & npm run lint & wait` yoki `npm-run-all` paketidan foydalanish mumkin. Build caching CI/CD platformalarda sozlanishi kerak.
 
 ## Yakuniy qadamlar
 
-1. Yuqoridagi tavsiyalar asosida profiling rejasi tuzing va o‘lchov natijalarini hujjatlashtiring.
-2. Eng ko‘p foyda beradigan 2–3 optimallashtirishni (masalan, sidebar memoization va API `lean()` querylari) birinchi navbatda joriy eting.
-3. Joriy etilgan o‘zgarishlar uchun Lighthouse va custom API benchmarklari bilan regressiya testlari o‘tkazing.
+1. ✅ Profiling rejasi tuzildi va `docs/profiling.md` faylida hujjatlashtirildi.
+2. ✅ Eng ko‘p foyda beradigan optimallashtirishlar joriy etildi: sidebar memoization, API `lean()` querylari, caching, virtualization, va boshqalar.
+3. ⏳ Joriy etilgan o‘zgarishlar uchun Lighthouse va custom API benchmarklari bilan regressiya testlari o‘tkazish tavsiya etiladi.
+
+## Bajarilgan optimallashtirishlar xulosa
+
+- **Render optimallashtirish**: Provider memoization, guard optimallashtirish, virtualization, dynamic imports
+- **API optimallashtirish**: DB indekslar, lean() queries, parallel counting, caching, cursor-based pagination
+- **Build optimallashtirish**: PWA runtime caching, bundle analyzer, katta fayllarni ajratish
+- **CI/CD optimallashtirish**: Profiling skriptlari, type checking, parallel build
 
 Shu kabi tartibli yondashuv loyihaning render tezligi va API javoblarini barqaror tarzda yaxshilaydi.

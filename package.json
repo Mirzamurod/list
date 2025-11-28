@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "type-check": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build",
+    "build:analyze": "npm run analyze",
+    "ci": "npm run type-check && npm run lint && npm run build"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
