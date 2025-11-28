@@ -11,6 +11,7 @@ import login from '@/store/user/login'
 import register from '@/store/user/register'
 import client from '@/store/client'
 import checkup from '@/store/checkup'
+import statistics from '@/store/statistics'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     register,
     client,
     checkup,
+    statistics,
   },
   // @ts-ignore
   middleware: () => [middleware],

@@ -121,6 +121,19 @@ const eng = {
   must_one_item: 'At least one must be filled in.',
   checkup_updated: 'Checkup successfully updated',
   checkup_deleted: 'Checkup successfully deleted',
+  statistics: 'Statistics',
+  period: 'Period',
+  week: 'Week',
+  month: 'Month',
+  year: 'Year',
+  custom: 'Custom',
+  start_date: 'Start date',
+  end_date: 'End date',
+  loading: 'Loading',
+  total_clients: 'Total clients',
+  total_checkups: 'Total checkups',
+  period_clients: 'Period clients',
+  period_checkups: 'Period checkups',
 }
 
 export type TranslationKeys = keyof typeof eng

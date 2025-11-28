@@ -119,6 +119,19 @@ const uz = {
   must_one_item: "Kamida bittasini to'ldirilishi kerak",
   checkup_updated: "Seans muvaffaqiyatli o'zgartirildi",
   checkup_deleted: "Seans muvaffaqiyatli o'chirildi",
+  statistics: 'Statistika',
+  period: 'Davr',
+  week: 'Hafta',
+  month: 'Oy',
+  year: 'Yil',
+  custom: 'Maxsus',
+  start_date: 'Boshlanish sanasi',
+  end_date: 'Tugash sanasi',
+  loading: 'Yuklanmoqda',
+  total_clients: 'Jami mijozlar',
+  total_checkups: 'Jami seanslar',
+  period_clients: 'Davr mijozlari',
+  period_checkups: 'Davr seanslari',
 }
 
 export default uz

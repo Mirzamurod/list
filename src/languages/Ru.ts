@@ -119,6 +119,19 @@ const ru = {
   must_one_item: 'Необходимо заполнить хотя бы одно поле.',
   checkup_updated: 'Сеансы успешно обновлена',
   checkup_deleted: 'Сеансы успешно удалена',
+  statistics: 'Статистика',
+  period: 'Период',
+  week: 'Неделя',
+  month: 'Месяц',
+  year: 'Год',
+  custom: 'Пользовательский',
+  start_date: 'Дата начала',
+  end_date: 'Дата окончания',
+  loading: 'Загрузка',
+  total_clients: 'Всего клиентов',
+  total_checkups: 'Всего сеансов',
+  period_clients: 'Клиенты за период',
+  period_checkups: 'Сеансы за период',
 }
 
 export default ru
