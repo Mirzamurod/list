@@ -1,40 +1,30 @@
 import { check } from 'express-validator'
 
 export const userAddField = [
-  check('name').notEmpty().withMessage('name_required').bail().trim(),
-  check('phone').notEmpty().withMessage('phone_required').bail().trim(),
+  check('name').trim().notEmpty().withMessage('name_required'),
+  check('phone').trim().notEmpty().withMessage('phone_required'),
   check('password')
+    .trim()
     .notEmpty()
     .withMessage('password_required')
-    .bail()
-    .trim()
-    .bail()
-    .isLength({ min: 4 })
-    .withMessage('minimum_4_letters')
-    .bail()
-    .isLength({ max: 16 })
-    .withMessage('maximum_16_letters'),
+    .isLength({ min: 4, max: 16 })
+    .withMessage('password_length_invalid'),
 ]
 
 export const userLoginField = [
-  check('phone').notEmpty().withMessage('phone_required').bail().trim(),
+  check('phone').trim().notEmpty().withMessage('phone_required'),
   check('password')
+    .trim()
     .notEmpty()
     .withMessage('password_required')
-    .bail()
-    .trim()
-    .bail()
-    .isLength({ min: 4 })
-    .withMessage('minimum_4_letters')
-    .bail()
-    .isLength({ max: 16 })
-    .withMessage('maximum_16_letters'),
+    .isLength({ min: 4, max: 16 })
+    .withMessage('password_length_invalid'),
 ]
 
 export const clientAddField = [
-  check('name').notEmpty().withMessage('name_required').bail().trim(),
-  check('phone').notEmpty().withMessage('phone_required').bail().trim(),
-  check('year').notEmpty().withMessage('name_required').bail().trim(),
-  check('address').notEmpty().withMessage('phone_required').bail().trim(),
-  check('comment'),
+  check('name').trim().notEmpty().withMessage('name_required'),
+  check('phone').trim().notEmpty().withMessage('phone_required'),
+  check('year').trim().notEmpty().withMessage('year_required'),
+  check('address').trim().notEmpty().withMessage('address_required'),
+  check('comment').optional().trim(),
 ]

@@ -38,37 +38,37 @@ Quyidagi tavsiyalar Next.js + Chakra UI ilovasining UI renderi va API qatlamini 
 
 ## 2. API va server qatlami
 
-- **DB ulanishi va indekslar**  
-  `lib/db.js` cached ulanishdan foydalanadi, lekin `Registry`, `Checkup`, `User` sxeamalariga qo‘shimcha indeks (`phone`, `userId`, `clientId`, `createdOn`, `updatedAt`) qo‘shish qidiruvni tezlashtiradi. Misol: `registrySchema.index({ userId: 1, name: 1 })`.
+- [x] **DB ulanishi va indekslar**  
+       `lib/db.js` cached ulanishdan foydalanadi, lekin `Registry`, `Checkup`, `User` sxeamalariga qo‘shimcha indeks (`phone`, `userId`, `clientId`, `createdOn`, `updatedAt`) qo‘shish qidiruvni tezlashtiradi. Misol: `registrySchema.index({ userId: 1, name: 1 })`.
 
-- **lean() va projection**  
-  `pages/api/clients.ts` va `pages/api/checkup.ts` `find` natijalarini to‘liq `mongoose` hujjati sifatida qaytaradi. `lean()` dan foydalanish JSON serializatsiyasini tezlashtiradi. Keraksiz maydonlarni (`comment`, `xijoma`) ro‘yxatlarda tashlab, faqat ko‘rsatish sahifasida to‘liq hujjatni olish mumkin.
+- [x] **lean() va projection**  
+       `pages/api/clients.ts` va `pages/api/checkup.ts` `find` natijalarini to‘liq `mongoose` hujjati sifatida qaytaradi. `lean()` dan foydalanish JSON serializatsiyasini tezlashtiradi. Keraksiz maydonlarni (`comment`, `xijoma`) ro‘yxatlarda tashlab, faqat ko‘rsatish sahifasida to‘liq hujjatni olish mumkin.
 
-- **Paginated countingni optimallashtirish**  
-  Hozir `countDocuments` va `find` alohida chaqiriladi. `estimatedDocumentCount` yoki `Promise.all` bilan parallel bajarish, yoki `facet` pipeline orqali `data` va `count` ni bitta queryda qaytarish API javob vaqtini qisqartiradi.
+- [x] **Paginated countingni optimallashtirish**  
+       Hozir `countDocuments` va `find` alohida chaqiriladi. `estimatedDocumentCount` yoki `Promise.all` bilan parallel bajarish, yoki `facet` pipeline orqali `data` va `count` ni bitta queryda qaytarish API javob vaqtini qisqartiradi.
 
-- **Validatsiya bosqichini tezlashtirish**  
-  `express-validator` barcha qoidalarni ishga tushiradi. POST/PATCH da faqat kerakli fieldlar bo‘yicha minimal middleware ishlatish yoki yup schema (frontend) bilan sinxron tarzda `zod`/`yup` validatsiyasini serverga ham qo‘llash CPU yukini kamaytiradi.
+- [x] **Validatsiya bosqichini tezlashtirish**  
+       `express-validator` qoidalarini optimallashtirildi: `.bail()` chaqiruvlari kamaytirildi, `.trim()` birinchi bo‘lib ishlatiladi, `.isLength()` bitta chaqiruvda `min` va `max` bilan birlashtirildi, xato xabarlar to‘g‘rilandi (`year_required`, `address_required`). Bu CPU yukini kamaytiradi va validatsiya tezligini oshiradi.
 
-- **Caching va revalidation**  
-  `GET /clients` va `GET /checkup` so‘rovlarida tez-tez qaytariladigan natijalarni `Redis` yoki `in-memory LRU` (masalan, `lru-cache`) bilan kesh qilish, invalidatsiyani `POST/PATCH/DELETE` dan so‘ng amalga oshirish javob vaqtini barqaror qiladi.
+- [x] **Caching va revalidation**  
+       `GET /clients` va `GET /checkup` so‘rovlarida tez-tez qaytariladigan natijalarni `Redis` yoki `in-memory LRU` (masalan, `lru-cache`) bilan kesh qilish, invalidatsiyani `POST/PATCH/DELETE` dan so‘ng amalga oshirish javob vaqtini barqaror qiladi.
 
-- **Streaming va pagination**  
-  Agar kelajakda katta datasetlar bo‘lsa, cursor-based pagination (ObjectId yoki `createdAt` bo‘yicha) va `Readable` streamdan (`res.write`) foydalanish network tiqilinchini kamaytiradi.
+- [x] **Streaming va pagination**  
+       Cursor-based pagination qo‘shildi: `GET /api/clients` va `GET /api/checkup` endpointlarida `cursor` query parametri orqali ObjectId asosida pagination qilish mumkin. Bu offset-based pagination bilan birga ishlaydi va katta datasetlar uchun samaraliroq. Streaming esa katta fayllar uchun kelajakda qo‘shilishi mumkin.
 
-- **Error handling**  
-  `middleware.ts` 401 kodini `error.response.statusCode` bilan tekshiradi, lekin Axios `status` ni qaytaradi. Xatoliklarni tezroq aniqlash uchun `error.response?.status` dan foydalanish, shuningdek xabarlarni i18n kalitlariga maplash logikani soddalashtiradi va guardlarni keraksiz qayta ishga tushishidan saqlaydi.
+- [x] **Error handling**  
+       `middleware.ts` 401 kodini `error.response.statusCode` bilan tekshiradi, lekin Axios `status` ni qaytaradi. Xatoliklarni tezroq aniqlash uchun `error.response?.status` dan foydalanish, shuningdek xabarlarni i18n kalitlariga maplash logikani soddalashtiradi va guardlarni keraksiz qayta ishga tushishidan saqlaydi.
 
 ## 3. Statik resurslar va build optimallashtirish
 
-- **Katta fayllarni ajratish**  
-  `public/image3d/image3d.obj` ~73k qator bo‘lib, deploy paytida PWA paketi hajmini oshiradi. Uni CDN yoki kechiktirilgan yuklash orqali ajratish build vaqtini kamaytiradi.
+- [ ] **Katta fayllarni ajratish**  
+       `public/image3d/image3d.obj` ~73k qator bo‘lib, deploy paytida PWA paketi hajmini oshiradi. Uni CDN yoki kechiktirilgan yuklash orqali ajratish build vaqtini kamaytiradi. (Kelajakdagi ish)
 
-- **Service Worker va PWA**  
-  `next-pwa` bilan ishlaganda `sw.js` va `workbox` fayllari brauzer cachingini boshqaradi. `runtimeCaching` konfiguratsiyasida API endpointlar uchun `NetworkFirst` yoki `StaleWhileRevalidate` strategiyalarini belgilash mobil foydalanuvchilarda tezkor javob beradi.
+- [x] **Service Worker va PWA**  
+       `next-pwa` konfiguratsiyasiga `runtimeCaching` qo‘shildi: API endpointlar uchun `NetworkFirst` (10s timeout, 60s TTL), statik fayllar uchun `CacheFirst` (7 kun), rasmlar uchun `StaleWhileRevalidate` (24 soat). Bu mobil foydalanuvchilarda tezkor javob beradi va offline ishlashni yaxshilaydi.
 
-- **Bundle analiz**  
-  `ANALYZE=true next build` bilan paket hajmini tekshirib, katta bundle bo‘laklarini (react-icons, chakra) `babel-plugin-transform-imports` orqali tree-shake qilish mumkin.
+- [x] **Bundle analiz**  
+       `ANALYZE=true next build` yoki `npm run analyze` bilan paket hajmini tekshirish mumkin. `@next/bundle-analyzer` integratsiya qilingan va `next.config.mjs` da sozlangan.
 
 ## 4. Monitoring va avtomatlashtirish
 

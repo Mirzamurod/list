@@ -18,4 +18,7 @@ const checkupSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+checkupSchema.index({ userId: 1, clientId: 1, updatedAt: -1 })
+checkupSchema.index({ clientId: 1, createdAt: -1 })
+
 export default mongoose.models.Checkup || mongoose.model('Checkup', checkupSchema)

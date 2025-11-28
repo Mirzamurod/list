@@ -12,4 +12,8 @@ const registrySchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+registrySchema.index({ phone: 1 }, { unique: true })
+registrySchema.index({ userId: 1, updatedAt: -1 })
+registrySchema.index({ userId: 1, name: 1 })
+
 export default mongoose.models.Registry || mongoose.model('Registry', registrySchema)

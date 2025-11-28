@@ -12,4 +12,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+userSchema.index({ phone: 1 }, { unique: true })
+userSchema.index({ role: 1, createdAt: -1 })
+
 export default mongoose.models.User || mongoose.model('User', userSchema)

@@ -48,7 +48,7 @@ const middleware =
         } else dispatch({ type: onFail, payload: res })
       })
       .catch(error => {
-        if (error?.response?.statusCode === 401) dispatch(deleteUser())
+        if (error?.response?.status === 401) dispatch(deleteUser())
         else {
           const data = error?.response?.data
           if (typeof data?.message === 'string' && data?.message)
